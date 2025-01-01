@@ -1,0 +1,24 @@
+<p class = "ms-5" style="text-align: center" Title = "Only the element on the top of the stack is displayed."><strong>{{Title}}</strong></p>
+<hr>
+<div style ="padding: 15px">
+    <div class="container">
+        <div class="row">
+            <div class="col-auto"> <!-- Rotate Begin -->
+                <h3 title = "Rotate stack."><strong>Rotate</strong></h3>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-secondary" (click)="onRotateUpward()" title ="The elements are moved toward the top of the stack. The element that was on top move to the bottom of the stack.">Upward</button>
+                    <button type="button" class="btn btn-secondary" (click)="onRotateDownward()" title ="The elements are moved toward the bottom of the stack. The element that was at the bottom move to the top of the stack.">Downward</button>
+                </div> <!-- Rotate End -->
+            </div>
+            <div class="col-auto"> <!-- Stage Begin -->
+                <h3 title = "Bring the top most stack element on the stage."><strong>Stage</strong></h3>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-secondary" (click)="onPopToStageRequested()"  title = "Pop and bring the element on stage.">Pop</button>
+                    <button type="button" class="btn btn-secondary" (click)="onPeekToStageRequested()" title = "Peek and bring the element on stage">Peek</button>
+                </div> <!-- Stage End -->
+            </div>
+        </div>
+    </div>
+    <p style = "padding-top: 15px;">{{stackStatus}}</p>
+    <ngx-json-viewer [json]=(stack) [expanded]="true" [depth]="1"></ngx-json-viewer>
+</div>

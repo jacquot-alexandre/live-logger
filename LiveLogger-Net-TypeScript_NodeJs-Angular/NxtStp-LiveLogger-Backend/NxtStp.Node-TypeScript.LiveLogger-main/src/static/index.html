@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Alex super Live Logger</title>
+  <style>
+    .notification-bottom {
+    opacity : 1;
+    line-height: 1.8;
+    border-color: #4c7aaf;
+    border-style: groove;
+    border-radius: 5px;
+    position: fixed;
+    width: 95%;
+    bottom: 0;
+    left: 10;
+    }
+    .button {
+    background-color: #4c7aaf;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width : 300px;
+    }
+    h1 {
+    font-size: 40px;
+    word-spacing: -8px;
+    color: #4c7aaf;
+    }
+    ul {
+    background: #4c7aaf;
+    padding: 20px;
+    }
+    ul li {
+    background: #cce5ff;
+    color: grey;
+    margin: 5px;
+    }
+  </style>
+</head>
+<body onload="OnLoad();">
+  <h1>Live Logger</h1>
+  <!--SERVER FUNCTIONS Begin-->
+  <button class="button" id="buttonClear">Clear received data on server side</button>
+  <button class="button" id="buttonSave">Save received data on server disk</button>
+  <!--SERVER FUNCTIONS End-->
+  <!--LOG Begin-->
+  <p></p>
+  <label>Client log depth</label>
+  <input type="text" id="logDepth" value=500 name ="formLogDepth">
+  <!--<label>Enter a log item</label>-->
+  <!--<input type="text" id="addLogItem"name ="formLogItem">-->
+  <button type="button" id="buttonClearLog">Clear client log</button>
+  <div id="logItemContainer"></div>
+  <div class="notification-bottom" id="responseId">> </div>
+  <!--LOG End-->
+</body>
+
+<script type="text/javascript">
+  /*REST CLIENT Begin*/
+   function httpGet(theUrl) {
+     let xmlHttpReq = new XMLHttpRequest();
+     xmlHttpReq.open("GET", theUrl, false);
+     xmlHttpReq.send(null);
+     return xmlHttpReq.responseText;
+   }
+   function clearReceivedData(){
+     document.getElementById("responseId").innerText ='> '+JSON.parse(httpGet('http://localhost:3000/clear')).Message;
+   }
+   function saveReceivedData(){
+     document.getElementById("responseId").innerText ='> '+JSON.parse(httpGet('http://localhost:3000/save')).Message;
+   }
+   document.getElementById("buttonClear").addEventListener("click", clearReceivedData);
+   document.getElementById("buttonSave").addEventListener("click", saveReceivedData);
+ /*REST CLIENT End*/
+ /* LOG Begin*/
+   /* MODEL Begin */
+   class LogArray{
+     _logArray =[];
+     constructor(array){
+         this._logArray = array;
+         this._index = 0;
+         this._done = false;
+     }
+     get array(){
+         return this._logArray;
+     }
+     add(element){
+       this._logArray.unshift(element); // add element to the beginning of the array
+       if (this._logArray.length-1 === logDepth){ // do not show more than logDepth log
+         this._logArray.splice(-1);
+       }
+     }
+     clear(){
+       this._logArray.length = 0;
+     }
+   }
+   class LogArrayIterator{  
+       constructor(logArray){
+           this._logArray =logArray ;
+           this._index = 0;
+           this._done = false;
+       }
+       next(){
+           if (this._index == this._logArray.array.length) {
+               return {done : true};
+           }
+           let value = this._logArray.array[this._index];
+           this._index++;
+           return {
+               value,
+               done : false
+           }
+       }
+   }
+   LogArray.prototype[Symbol.iterator] = function () {return new LogArrayIterator(this)};
+   var logDepth = 500;
+   var logArray = new LogArray([]);
+   const ws = new WebSocket('ws://localhost:8080');
+   /* MODEL End */
+   /* LOG CONTROLLER Begin*/
+   function ClearLogsInUI(){
+     let aLogItemList = document.getElementById("logList").innerHTML="";
+   }
+   function AddLogsToList(){
+     ClearLogsInUI();
+     for(let logItem of logArray){
+     let listItem = document.createElement("li");
+     listItem.innerHTML = logItem;
+     let aLogItemList = document.getElementById("logList");
+     aLogItemList.appendChild(listItem);
+     }
+   }
+   let OnChangeLogDepth = function(event) {
+    if (event.key == "Enter") {
+      logArray.clear();
+      logDepth = Number(document.getElementsByName("formLogDepth")[0].value);
+      ClearLogsInUI();
+    }
+   }
+   /*
+   let OnButtonAddLogItemClick = function(event){
+    if (event.key == "Enter") {
+       let aText = document.getElementsByName("formLogItem")[0].value;
+       AddLogItem(aText);
+    }
+   }
+   */
+   function AddLogItem(item){
+       logArray.add(item);
+       AddLogsToList();
+   }
+   let OnButtonClearLogClick = function(){  
+     logArray.clear();
+     ClearLogsInUI();
+   }
+  function OnLoad(){
+    document.getElementById("logDepth").addEventListener("keypress", OnChangeLogDepth);
+    //document.getElementById("addLogItem").addEventListener("keypress", OnButtonAddLogItemClick);
+    let alist = document.createElement("ul");
+    alist.setAttribute("id", "logList");
+    document.getElementById("buttonClearLog").addEventListener("click", OnButtonClearLogClick);
+    let container1 = document.getElementById("logItemContainer");
+    container1.appendChild(alist);
+    ws.onopen = function() {
+         ws.send('Hello from client');
+    };
+    ws.onmessage = function(messageEvent) {
+        messageEvent.data;
+        AddLogItem(messageEvent.data);
+    }
+  }
+   /* LOG CONTROLLER End*/
+ /* LOG End*/
+</script>
+</html>

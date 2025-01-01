@@ -1,0 +1,249 @@
+<p class = "ms-5" style="text-align: center"><strong>{{title}}</strong></p>
+
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <!-- Manage Begin -->
+    <h2 class="accordion-header" style ="padding: 15px">
+      <button class="accordion-button bg-dark bg-gradient collapsed" style="padding: 5px" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <p class = "text-white ms-2">Manage</p>
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-auto"> <!-- Import stack Begin -->
+              <h3><strong>Import</strong></h3>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" (click)="onImportStackRequested()" title = "Import stack stored on the server.">Stack.json</button>
+              </div>
+            </div> <!-- Import stack End -->
+            <div class="col-auto"> <!-- Clear messages Begin -->
+              <h3><strong>Clear messages</strong></h3>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" (click)="onClearBatchOfMessagesOnFrontEnd()" title = "Unprocessed and processed messages on stage are deleted">Stage</button>
+                <button type="button" class="btn btn-secondary" (click)="onClearInBackEndReceivedData()">Backend</button>
+              </div>
+            </div> <!-- Clear messages End-->
+            <div class="col-auto"> <!-- Clear calculations Begin -->
+              <h3><strong>Clear calculations</strong></h3>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" (click)="onClearCalculationsOnStageRequested()" title = "Clear calculation on the stage.">Stage</button>
+              </div>
+            </div> <!-- Clear calculations End -->
+            <div class="col-auto"> <!-- Copy messages Begin -->
+              <h3><strong>Copy messages</strong></h3>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" (click)="onCopyProcessedIntoUnprocessedMessage()" title = "">Processed > unprocessed</button>
+              </div>
+            </div> <!-- Copy messages End -->
+            <div class="col-auto"> <!-- Request OS resource info Begin -->
+              <h3><strong>Get resources info</strong></h3>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" (click)="onRequestOsResourcesInfo()" title = "">Cpu / mem usage</button>
+              </div>
+            </div> <!-- Request OS resource info  End -->
+          </div>
+        </div>
+      </div>
+    </div>
+     <!-- Manage End -->
+  </div>
+  <div class="accordion-item">
+    <!-- Filter and sort Begin -->
+    <h2 class="accordion-header" style ="padding: 15px">
+      <button class="accordion-button  bg-dark bg-gradient collapsed" style="padding: 5px" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <p class = "text-white ms-2">Filter and sort</p>
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-auto"> <!-- Filtering -->
+              <h3><strong>Filter</strong></h3>
+              <p>
+                <input class="form-check-input" style type="checkbox"  [(ngModel)]="noFiltering" (change)="onNoFilteringChange($event)">
+                <label class="form-check-label" for="flexCheckDefault">
+                  <p class = "sm-2" style ="padding-left: 10px">No filtering</p>
+                </label>
+              </p>
+              <mat-form-field style="width: 400px">
+                <mat-select [(ngModel)]="selectedFilteringKey" [disabled]="noFiltering" placeholder="Select filtering key" (selectionChange)="onFilteringKeyChange($event)">
+                  <mat-option disableOptionCentering *ngFor="let filteringKey of filteringKeys" [value]="filteringKey.name">
+                    {{filteringKey.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <p>
+                <input class="form-check-input" style type="checkbox"  [disabled]="noFiltering" [(ngModel)]="filteringByValueChecked">
+                <label class="form-check-label" for="flexCheckDefault">
+                  <p class = "sm-2" style ="padding-left: 10px" title ="Enabled only when filtering is enable, a filtering key is selected and unprocessed messages are in tabular form.">Filtering by value</p>
+                </label>
+              </p>
+              <mat-form-field style="width: 400px" title="Values in selected filtering column that are not number">
+                <mat-select [(ngModel)]="selectedFilteringValue" [disabled]="filterByValueDisabled" placeholder="Select filtering value">
+                  <mat-option disableOptionCentering *ngFor="let filteringValue of filteringValues" [value]="filteringValue.value">
+                    {{filteringValue.value}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            
+            <div class="col-auto"> <!-- Sorting -->
+              <h3><strong>Sort</strong></h3>
+              <p>
+                <input class="form-check-input" style type="checkbox"  [disabled]="noSortingPossible" [(ngModel)]="disabledSorting" (change)="onDisabledSortingChange($event)">
+                <label class="form-check-label" for="flexCheckDefault">
+                  <p class = "sm-2" style ="padding-left: 10px">Disable sorting</p>
+                </label>
+              </p>
+              <mat-form-field style="width: 400px">
+                <mat-select [(ngModel)]="selectedFilteringColumn" [disabled]="disabledSorting" placeholder="Select sorted column name" (selectionChange)="onColumnNameChange($event)">
+                  <mat-option disableOptionCentering *ngFor="let sortingColumn of sortingColumns" [value]="sortingColumn.name">
+                    {{sortingColumn.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <br>
+              <mat-button-toggle-group  [(ngModel)]="defaultSortingDirection" [disabled]="disabledSorting">
+                <mat-button-toggle *ngFor="let sortingDirection of sortingDirections;" [value]="sortingDirection" (change)="sortingDirectionChanged($event)">{{sortingDirection}}</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Filter and sort End-->
+  </div>
+  <div class="accordion-item">
+    <!-- Calculate and aggregate Begin -->
+    <h2 class="accordion-header" style ="padding: 15px">
+      <button class="accordion-button bg-dark bg-gradient collapsed" style="padding: 10px" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <p class = "text-white ms-2">Calculate and aggregate</p>
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-auto"> <!-- Calculate on stage Begin -->
+              <h3 style="padding-top: 30px;" title ="The calculation is performed on the sorted column."><strong>Calculate on stage</strong></h3>
+              <div class="btn-group" role="group" style = "padding-left: 5px;">
+                <button type="button" class="btn btn-secondary" [disabled] ="isCalculationOnStageDisabledForPick" (click)="onPickOnStageRequested()">Pick</button>
+                <button type="button" class="btn btn-secondary" [disabled] ="isCalculationOnStageDisabledForDiff" (click)="onDiffOnStageRequested()">Diff</button>
+                <button type="button" class="btn btn-secondary" [disabled] ="isCalculationOnStageDisabledForSumAndMean" (click)="onSumOnStageRequested()">Sum</button>
+                <button type="button" class="btn btn-secondary" [disabled] ="isCalculationOnStageDisabledForSumAndMean" (click)="onMeanOnStageRequested()">Mean</button>
+              </div>
+              <br>
+              <p style="padding: 10px;">
+                <input class="form-check-input" style type="checkbox"  [disabled]="isCalculationOnStageDisabledForPick" [(ngModel)]="convertMicroMilliSecond">
+                <label class="form-check-label" for="flexCheckDefault" >
+                  <p class = "sm-2" style ="padding-left: 10px">Convert Pick from µs to ms</p>
+                </label>
+                <br>
+                <input class="form-check-input" style type="checkbox"  [disabled]="isCalculationOnStageDisabledForPick" [(ngModel)]="renamePickToDiff">
+                <label class="form-check-label" for="flexCheckDefault" >
+                  <p class = "sm-2" style ="padding-left: 10px">Rename Pick in Diff</p>
+                </label>
+                <br>
+                <input class="form-check-input" style type="checkbox"  [disabled]="isCalculationOnStageDisabledForDiff" [(ngModel)]="minusDiff">
+                <label class="form-check-label" for="flexCheckDefault" >
+                  <p class = "sm-2" style ="padding-left: 10px">- Diff</p>
+                </label>
+              </p>
+            </div> <!-- Calculate End -->
+            <div class="col-auto"> <!-- Manipulate stack Begin -->
+              <h3 style="padding-top: 30px;"><strong>Manipulate stack</strong></h3>
+              <div class="btn-group" role="group" style = "padding-left: 5px;">
+                <button type="button" class="btn btn-secondary" (click)="onPushBatchOfMessagesInFrontEndStack()" title="Processed messages will be push on the stack">Push</button>
+                <button type="button" class="btn btn-secondary" (click)="onClearStack()">Clear</button>
+              </div> 
+              <div class="mb-3"> 
+                <label for="exampleFormControlTextarea1" class="form-label" style = "padding-top: 5px">Enter description of element push on the stack</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"  [(ngModel)] = "descriptionOfElementToBePushedOnStack"></textarea>
+              </div> <!-- Manipulate stack End-->
+              <p>Metadata from peek or pop element:</p>
+              <div>{{fromStack}}</div>
+            </div>
+            <div class="col-auto"> <!-- Calculate on stack Begin -->
+              <h3 style="padding-top: 30px;" title="The calculation is done on all or specific elements of the stack."><strong>Calculate on stack</strong></h3>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" [disabled] ="isMeanCalculationOnStackDisabled" (click)="onSumOnStackRequested()">Sum</button>
+                <button type="button" class="btn btn-secondary" [disabled] ="isMeanCalculationOnStackDisabled" (click)="onMeanOnStackRequested()">Mean</button>
+                <button type="button" class="btn btn-secondary" [disabled] ="isDiffCalculationOnStackDisabled" (click)="onDiffOnStackRequested()">Diff</button>
+                <button type="button" class="btn btn-secondary" [disabled] ="isFractionCalculationOnStackDisabled" (click)="onFractionOnStackRequested()">%</button>
+              </div>
+              <br>
+              <p style ="padding-left: 150px; padding-top: 10px;" >
+                <input class="form-check-input" style type="checkbox"  [disabled]="isCalculationOnStageDisabledForDiffAndFraction" [(ngModel)]="swapInputOnStack">
+                <label class="form-check-label" for="flexCheckDefault" >
+                  <p class = "sm-2">Swap</p>
+                </label>
+              </p>
+              <br>
+              <mat-form-field style="width: 200px; padding-top: 5px;">
+                <mat-select [(ngModel)]="selectedDataSource" placeholder="Select a data source">
+                  <mat-option  disableOptionCentering *ngFor="let dataSource of dataSources" [value]="dataSource.name">
+                    {{dataSource.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <p style = "padding-left: 15px;">
+                <input class="form-check-input" style type="checkbox" [(ngModel)]="useToken">
+                <label class="form-check-label" for="flexCheckDefault">
+                  <p class = "sm-2" style ="padding-left: 10px">Use token</p>
+                </label>
+              </p>
+              <mat-form-field style="width: 200px">
+                <mat-select [(ngModel)]="selectedToken" [disabled]="!useToken" placeholder="Select the token">
+                  <mat-option disableOptionCentering *ngFor="let token of tokens" [value]="token.name">
+                    {{token.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> <!-- Calculate on stack end -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Calculate and aggregate End-->
+    <div class="accordion-item">
+      <!-- Export Begin -->
+      <h2 class="accordion-header" style ="padding: 15px">
+        <button class="accordion-button bg-dark bg-gradient collapsed" style="padding: 5px" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+          <p class = "text-white ms-2">Export</p>
+        </button>
+      </h2>
+      <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-auto"> <!-- Export backend messages Begin -->
+                <h3 title ="Server data"><strong>Backend messages</strong></h3> 
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-secondary" (click)="onSaveReceivedDataOnBackEndAsJSON()">JSON</button>
+                  <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="auto"  title="Maybe not always possible" (click)="onSaveReceivedDataOnBackEndAsCSV()">CSV</button>
+                </div> 
+              </div> <!-- Export backend messages End -->
+              <div class="col-auto"> <!-- Export stage Begin-->
+                <h3 title="only processed messages are exported"><strong>Stage</strong></h3> 
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-secondary" (click)="OnExportStageAsJsonRequested()">JSON</button>
+                  <button type="button" class="btn btn-secondary" (click)="OnExportStageAsCsvRequested()">CSV</button>
+                </div>
+              </div>  <!-- Export stage End -->
+              <div class="col-auto"> <!-- Export stack Begin -->
+                <h3><strong>Stack</strong></h3>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-secondary" (click)="OnExportStackAsJsonRequested()">JSON</button>
+                </div>
+              </div>  <!-- Export stack End -->
+            </div>
+          </div>
+        </div>
+      </div>
+       <!-- Export End -->
+    </div>
+  </div>
+</div>

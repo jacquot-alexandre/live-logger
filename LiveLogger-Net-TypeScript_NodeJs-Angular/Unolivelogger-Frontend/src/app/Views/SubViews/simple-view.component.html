@@ -1,0 +1,54 @@
+<p class = "ms-5" style="text-align: center"><strong>{{title}}</strong></p>
+<div class="accordion" id="accordionPanelsStayOpenExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" style ="padding: 15px">
+      <button class="accordion-button bg-dark bg-gradient collapsed" style="padding: 5px" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+          <p class = "text-white ms-2">Unprocessed messages.</p>
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+      <div class="accordion-body">
+          <!-- unprocessed messages Begin -->
+          <p><strong>message of type json</strong></p>
+           {{noJsonMessages}}
+          <ngx-json-viewer *ngIf="unfilteredJsonViewVisible" [json]={unfiltered} [expanded]="true"></ngx-json-viewer>
+          <div #placeHolderForTableOfUnfilteredData style ="padding: 10px"></div>
+          <p><strong>message of type plain text</strong></p>
+          {{noTextMessages}}
+          <ngx-json-viewer *ngIf="textMessagesVisible" [json]={textMessages} [expanded]="true"></ngx-json-viewer>
+          <!-- unprocessed messages End -->
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" style ="padding: 15px">
+      <button class="accordion-button bg-dark bg-gradient collapsed collapsed" style="padding: 5px" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+          <p class = "text-white ms-2">Processed messages.</p>
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <!-- processed messages Begin -->
+        {{filter}}
+        <ngx-json-viewer *ngIf="filteredJsonViewVisible" [json]={filtered} [expanded]="true"></ngx-json-viewer>
+        <div #placeHolderForTableOfFilteredData style ="padding: 10px"></div>
+        <!-- processed message End -->
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" style ="padding: 15px">
+      <button class="accordion-button bg-dark bg-gradient collapsed collapsed" style="padding: 5px" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+          <p class = "text-white ms-2">Calculation results.</p>
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <!-- Calculation results Begin -->
+        {{resultMessage}}
+        <ngx-json-viewer  *ngIf="!noResults" [json]={results} [expanded]="true"></ngx-json-viewer>
+        <!-- Calculation results End -->
+      </div>
+    </div>
+  </div>
+</div>

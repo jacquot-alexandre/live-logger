@@ -1,0 +1,30 @@
+<nav class="navbar navbar-dark bg-dark fixed-top" y aria-label="Dark offcanvas navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Uno live logger</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarDark" aria-controls="offcanvasNavbarDark" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" style="width: 200px" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarDarkLabel">Select the view</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link" routerLink = "simple">Stage</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink ="advanced">Stack</a>
+            </li>
+            <hr>
+            <li>
+              <a class="nav-link" routerLink ="actions">Actions</a>
+            </li>
+            <hr>
+            <a href="https://sparklink.collaboration.agilent.com/x/eIQPK" target="_blank">Help</a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>

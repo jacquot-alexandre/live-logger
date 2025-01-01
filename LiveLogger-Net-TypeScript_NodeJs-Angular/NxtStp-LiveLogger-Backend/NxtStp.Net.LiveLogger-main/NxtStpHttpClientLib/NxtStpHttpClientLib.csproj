@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+    <TargetFrameworks>net472;</TargetFrameworks>
+  </PropertyGroup>
+	<ItemGroup>
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+</Project>
