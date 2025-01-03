@@ -1,0 +1,26 @@
+# Angular
+.angular/
+node_modules/
+dist/
+tmp/
+out-tsc/
+*.log
+*.tsbuildinfo
+
+# Environment files
+src/environments/*.ts
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
