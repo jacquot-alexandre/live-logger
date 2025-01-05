@@ -1,8 +1,24 @@
+
+# move to in the directory where the current script is located
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
+Set-Location $scriptDirectory
+
+# Define the path to the XML file relative to the script
+$xmlFilePath = "../paths.xml"
+
+# Load the XML file
+$xml = [xml](Get-Content $xmlFilePath)
+
+# Extract the path value
+$wslDistroDir = $xml.root.wslDistroPath
+
 # Define the destination directory of the directory container the server built file (html, js)
-$distDestinationDir = "\\wsl.localhost\Ubuntu-24.04\home\ajacquot\Documents\LiveLogger\Docker\Back-end\dist"
+$distDestinationDir = $wslDistroDir+"\home\ajacquot\Documents\LiveLogger\Docker\Back-end\dist"
+
+$liveloggerRootDir = $xml.root.liveloggerRootPath
 
 # Define the source directory
-$distSourceDir = "C:\Users\Ich\Documents\0000_Github\live-logger\LiveLogger-Net-TypeScript_NodeJs-Angular\NxtStp-LiveLogger-Backend\NxtStp.Node-TypeScript.LiveLogger-main\dist"
+$distSourceDir = $liveloggerRootDir+"\LiveLogger-Net-TypeScript_NodeJs-Angular\NxtStp-LiveLogger-Backend\NxtStp.Node-TypeScript.LiveLogger-main\dist"
 
 # Remove all child items in the destination directory
 Get-ChildItem $distDestinationDir | ForEach-Object { Remove-Item $_.FullName -Recurse -Force }
@@ -18,7 +34,7 @@ Write-Output "html and js files copied successfully from $distSourceDir to $dist
 $DockerfileDestinationDir = Split-Path -Path $distDestinationDir
 
 #Dockerfile source directory
-$DockerfileSourceDir = "C:\Users\Ich\Documents\0000_Github\live-logger\Build\Docker\Back-end"
+$DockerfileSourceDir = $liveloggerRootDir+"\Build\Docker\Back-end"
 
 # Copy the dockerfile into its destination directory
 
