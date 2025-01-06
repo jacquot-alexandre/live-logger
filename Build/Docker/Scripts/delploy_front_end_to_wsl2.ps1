@@ -1,3 +1,6 @@
+# Save the current directory $originalDirectory
+$originalDirectory = Get-Location
+
 # move to in the directory where the current script is located
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Set-Location $scriptDirectory
@@ -63,3 +66,6 @@ Copy-Item -Path $DependenciesSourceDir\package.json -Destination $DockerfileDest
 Copy-Item -Path $DependenciesSourceDir\package-lock.json -Destination $DockerfileDestinationDir
 
 Write-Output "package*.json copied successfully from $DependenciesSourceDir to $DockerfileDestinationDir"
+
+# Restore the original directory
+Set-Location $originalDirectory

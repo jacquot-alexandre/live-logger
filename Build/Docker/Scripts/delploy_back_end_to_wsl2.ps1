@@ -1,3 +1,5 @@
+# Save the current directory $originalDirectory
+$originalDirectory = Get-Location
 
 # move to in the directory where the current script is located
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -12,7 +14,7 @@ $xml = [xml](Get-Content $xmlFilePath)
 # Extract the path value
 $wslDistroDir = $xml.root.wslDistroPath
 
-# Define the destination directory of the directory container the server built file (html, js)
+# Define the destination directory of distribution files related to the server (html, js)
 $distDestinationDir = $wslDistroDir+"\home\ajacquot\Documents\LiveLogger\Docker\Back-end\dist"
 
 $liveloggerRootDir = $xml.root.liveloggerRootPath
@@ -51,3 +53,6 @@ Copy-Item -Path $DependenciesSourceDir\package.json -Destination $DockerfileDest
 Copy-Item -Path $DependenciesSourceDir\package-lock.json -Destination $DockerfileDestinationDir
 
 Write-Output "package*.json copied successfully from $DependenciesSourceDir to $DockerfileDestinationDir"
+
+# Restore the original directory
+Set-Location $originalDirectory
