@@ -7,13 +7,13 @@ namespace Samples
 {
     internal static class Example_3
     {
-        internal static void Run()
+        internal static void Run(bool cloud = false)
         {
             // Example 3
             // performance measurement using low level API
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var http = new NxtStpHttpClient("http://127.0.0.1:3000", "logText", "text/plain");
+            var http = new NxtStpHttpClient("127.0.0.1", "logText", "text/plain") { Cloud = cloud };
             http.Metrics = new NxtStpHttpClientMetrics(stopWatch);
             var metrics = http.Metrics;
             metrics.M0 = http.Metrics.PerformanceStopWatchElapsed();

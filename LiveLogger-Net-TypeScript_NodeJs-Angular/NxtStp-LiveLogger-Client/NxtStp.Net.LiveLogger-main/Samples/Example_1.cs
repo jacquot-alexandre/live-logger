@@ -1,5 +1,6 @@
 ﻿using NxtStpHttpClientLib;
 using System;
+using System.Net.Http;
 using System.Text.Json;
 namespace Samples
 {
@@ -13,7 +14,7 @@ namespace Samples
         }
 
 
-        internal static void Run()
+        internal static void Run(bool cloud = false)
         {
             //Example 1
             var payloadObject = new JsonPayLoad()
@@ -22,7 +23,7 @@ namespace Samples
                 Value1 = "1.0",
                 Value2 = "1.0"
             };
-            var http = new NxtStpHttpClient();
+            var http = new NxtStpHttpClient() { Cloud = cloud };
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonPayLoad = JsonSerializer.Serialize(payloadObject, options);
             http.EndPointPost(jsonPayLoad);

@@ -13,7 +13,7 @@ namespace Samples
             path3
         }
 
-        internal static void Run()
+        internal static void Run(bool cloud = false)
         {
             var httpPerformanceBase = new NxtStpHttpPerformanceLogBase();
             var path = Paths.path2;
@@ -43,7 +43,7 @@ namespace Samples
                                     // - Execution path # 
                                     // - Path execution duration [s] #. 
                                     // These two set of keys translates into two columns. The first column provide a description of the path 1 and the second column provide the execution duration of this path.
-            var http = new NxtStpHttpClient();
+            var http = new NxtStpHttpClient() { Cloud = cloud };
             http.EndPointPost(log);
         }
     }

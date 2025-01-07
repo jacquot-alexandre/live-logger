@@ -6,7 +6,7 @@ namespace Samples
 {
     internal static class Example_4
     {
-        internal static void Run()
+        internal static void Run(bool cloud = false)
         {
             // Example 4
             // performance measurement  using minimum functionalities of the NxtStpHttpPerformanceLogBase base class.
@@ -22,7 +22,7 @@ namespace Samples
                                     // - Execution path # 
                                     // - Path execution duration [s] #. 
                                     // These two set of keys translates into two columns. The first column provide a description of the path 1 and the second column provide the execution duration of this path.
-            var http = new NxtStpHttpClient();
+            var http = new NxtStpHttpClient() { Cloud = cloud };
             http.EndPointPost(log);
         }
     }

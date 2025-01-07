@@ -28,6 +28,11 @@ namespace NxtStpHttpClientLib
         /// </summary>
         NxtStpHttpClientMetrics Metrics { get; set; }
 
+        /// <summary>
+        /// If true, http request is made on port 80 and on the endpoint /api.
+        /// </summary>
+        bool Cloud { get; set; }
+
         #endregion Properties
 
         #region Methods

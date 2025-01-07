@@ -59,7 +59,7 @@ namespace Samples
             Console.ReadLine();
         }
 
-        private static void LogEnlapsedTimeInConsole(TimeSpan ts) 
+        private static void LogEnlapsedTimeInConsole(TimeSpan ts)
         {
             Console.WriteLine("Elapsed Time: {0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
         }
