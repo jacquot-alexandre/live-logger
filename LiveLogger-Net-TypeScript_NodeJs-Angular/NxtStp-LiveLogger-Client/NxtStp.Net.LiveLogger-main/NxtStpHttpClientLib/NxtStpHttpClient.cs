@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -36,8 +37,6 @@ namespace NxtStpHttpClientLib
 
         private string DEFAULT_IP = "127.0.0.1";
 
-        private string ip;
-
         #endregion private Field and Constants
 
         #region public Events
@@ -50,7 +49,7 @@ namespace NxtStpHttpClientLib
 
         public NxtStpHttpClient(string ip = "127.0.0.1", string resource = "log", string acceptHeader = "application/json")
         {
-            this.ip = ip;
+            this.Ip = IPAddress.Parse(ip);
             this.resource = resource;
             this.httpClient = new HttpClient();
             this.baseUrl = DEFAULT_PROTOCOL + ip + DEFAULT_PORT;
@@ -66,6 +65,9 @@ namespace NxtStpHttpClientLib
         #endregion Constructors
 
         #region public Properties
+
+        /// <inheritdoc cref="INxtStpHttpClient.Ip"/>
+        public IPAddress Ip { get; set; } = null;
 
         /// <inheritdoc cref="INxtStpHttpClient.Id"/>
         public Guid Id { get; }
@@ -91,7 +93,7 @@ namespace NxtStpHttpClientLib
                     port = ":3000";
                     subPath = string.Empty;
                 }
-                this.baseUrl = DEFAULT_PROTOCOL + this.ip + port;
+                this.baseUrl = DEFAULT_PROTOCOL + this.Ip.ToString() + port;
                 this.endPoint = subPath + this.resource;
                 this.cloud = value;
             }

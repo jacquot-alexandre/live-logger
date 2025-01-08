@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace NxtStpHttpClientLib
 {
@@ -32,6 +33,11 @@ namespace NxtStpHttpClientLib
         /// If true, http request is made on port 80 and on the endpoint /api.
         /// </summary>
         bool Cloud { get; set; }
+
+        /// <summary>
+        /// Ip address that can evetually overriden the local default ip address.
+        /// </summary>
+        IPAddress Ip {  get; set; }
 
         #endregion Properties
 

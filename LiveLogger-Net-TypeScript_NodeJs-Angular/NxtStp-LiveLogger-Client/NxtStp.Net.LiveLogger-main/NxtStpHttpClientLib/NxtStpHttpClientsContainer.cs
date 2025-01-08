@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 
 namespace NxtStpHttpClientLib
 {
@@ -12,12 +13,15 @@ namespace NxtStpHttpClientLib
 
         private readonly NxtStpHttpClientMetrics metrics;
 
+        private IPAddress ip;
+
         #endregion private Fields and Constants
 
         #region Constructor
 
-        public NxtStpHttpClientsContainer(NxtStpHttpClientMetrics metrics) : this()
+        public NxtStpHttpClientsContainer(IPAddress ip, NxtStpHttpClientMetrics metrics) : this()
         {
+            this.ip = ip;
             this.metrics = metrics;
         }
 
@@ -47,6 +51,7 @@ namespace NxtStpHttpClientLib
             }
 
             var newHttp = new TLogType();
+            newHttp.Ip = ip;
             newHttp.Metrics = this.metrics;
             httpsContainer.TryAdd(instanceIndex, newHttp);
             this.FillMetrics("new instance", instanceIndex);
