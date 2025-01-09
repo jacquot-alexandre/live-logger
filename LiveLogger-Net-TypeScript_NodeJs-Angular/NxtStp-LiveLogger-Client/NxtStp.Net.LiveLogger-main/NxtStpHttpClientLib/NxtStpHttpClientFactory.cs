@@ -45,7 +45,8 @@ namespace NxtStpHttpClientLib
         /// <returns>return and instance of NxtStpHttpClientsContainer</returns>
         public static NxtStpHttpClientsContainer<TInstanceIndexType> Lazy(
             ref NxtStpHttpClientsContainer<TInstanceIndexType> nxtStpHttpClientsContainer,
-            IPAddress ip, 
+            IPAddress ip = null, 
+            bool cloud = false,
             params string[] contextInfo)
         {
             if (nxtStpHttpClientsContainer != null)
@@ -65,7 +66,7 @@ namespace NxtStpHttpClientLib
                 ContextInfo1 = (contextInfo.Length > 1) ? contextInfo[1] : string.Empty,
                 M3 = startTime
             };
-            nxtStpHttpClientsContainer = new NxtStpHttpClientsContainer<TInstanceIndexType>(ip, metrics);
+            nxtStpHttpClientsContainer = new NxtStpHttpClientsContainer<TInstanceIndexType>(metrics, ip, cloud);
             metrics.M4 = performanceStopWatch.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
             metrics.Result2 = metrics.MicroSecondsToSeconds(metrics.M4 - metrics.M3);
             return nxtStpHttpClientsContainer;

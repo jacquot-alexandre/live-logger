@@ -15,14 +15,20 @@ namespace NxtStpHttpClientLib
 
         private IPAddress ip;
 
+        private bool cloud;
+
         #endregion private Fields and Constants
 
         #region Constructor
 
-        public NxtStpHttpClientsContainer(IPAddress ip, NxtStpHttpClientMetrics metrics) : this()
+        public NxtStpHttpClientsContainer(NxtStpHttpClientMetrics metrics, IPAddress ip = null, bool cloud = false) : this()
         {
-            this.ip = ip;
             this.metrics = metrics;
+            if (ip != null) // overwhire 127.0.0.1 is not overriden.
+            {
+                this.ip = ip;
+            }
+            this.cloud = cloud;
         }
 
         /// <summary>
@@ -51,7 +57,11 @@ namespace NxtStpHttpClientLib
             }
 
             var newHttp = new TLogType();
-            newHttp.Ip = ip;
+            if (ip != null)
+            {
+                newHttp.Ip = ip;
+            }
+            newHttp.Cloud = cloud;
             newHttp.Metrics = this.metrics;
             httpsContainer.TryAdd(instanceIndex, newHttp);
             this.FillMetrics("new instance", instanceIndex);

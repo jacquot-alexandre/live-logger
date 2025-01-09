@@ -14,7 +14,7 @@ namespace Samples
 
             NxtStpHttpClientsContainer<int> httpClientsContainer = null;
             Console.WriteLine($"Thread # {Thread.CurrentThread.ManagedThreadId}");
-            var nxtStpHttpPerformanceLogBase = NxtStpHttpClientFactory<int>.Lazy(ref httpClientsContainer, null, "Polyglot notebook context").GetHttp<NxtStpHttpPerformanceLogBase>(Thread.CurrentThread.ManagedThreadId);
+            var nxtStpHttpPerformanceLogBase = NxtStpHttpClientFactory<int>.Lazy(ref httpClientsContainer, null, false, "Polyglot notebook context").GetHttp<NxtStpHttpPerformanceLogBase>(Thread.CurrentThread.ManagedThreadId);
             nxtStpHttpPerformanceLogBase.BeginLog(1);
             Thread.Sleep(1000);
             nxtStpHttpPerformanceLogBase.EndLog(1, "path 1");

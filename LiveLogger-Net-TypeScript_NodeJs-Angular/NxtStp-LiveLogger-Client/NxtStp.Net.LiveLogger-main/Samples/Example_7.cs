@@ -24,7 +24,7 @@ namespace Samples
             }
         }
 
-        internal static void Run()
+        internal static void Run(bool cloud = false)
         {
             // Example 7
 

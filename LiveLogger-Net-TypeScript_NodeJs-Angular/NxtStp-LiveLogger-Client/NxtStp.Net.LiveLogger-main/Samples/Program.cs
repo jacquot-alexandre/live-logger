@@ -8,6 +8,7 @@ namespace Samples
     {
         static async Task Main(string[] args)
         {
+            bool cloud = false;
             switch (args[0])
             {
                 case ("Example1"):

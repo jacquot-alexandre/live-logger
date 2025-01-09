@@ -67,7 +67,11 @@ namespace NxtStpHttpClientLib
         #region public Properties
 
         /// <inheritdoc cref="INxtStpHttpClient.Ip"/>
-        public IPAddress Ip { get; set; } = null;
+        public IPAddress Ip 
+        { 
+            get; 
+            set; 
+        } = null;
 
         /// <inheritdoc cref="INxtStpHttpClient.Id"/>
         public Guid Id { get; }
