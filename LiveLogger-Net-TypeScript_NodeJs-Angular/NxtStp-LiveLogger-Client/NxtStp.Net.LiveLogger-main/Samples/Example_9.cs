@@ -33,7 +33,7 @@ namespace Samples
 
         private async Task CreateAndExecuteThreads()
         {
-            // Create a list of 10 work items
+            // Create a list of 100 work items
             var workItemIndexes = Enumerable.Range(1, workItemNumber).ToList();
 
             // Use Parallel.ForEach to create and run tasks

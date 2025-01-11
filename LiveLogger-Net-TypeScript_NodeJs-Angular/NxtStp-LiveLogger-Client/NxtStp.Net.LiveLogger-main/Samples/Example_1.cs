@@ -14,7 +14,7 @@ namespace Samples
         }
 
 
-        internal static void Run(bool cloud = false)
+        internal static void Run(bool cloud = true)
         {
             //Example 1
             var payloadObject = new JsonPayLoad()

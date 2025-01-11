@@ -2,7 +2,7 @@
   "profiles": {
     "Samples": {
       "commandName": "Project",
-      "commandLineArgs": "Example7"
+      "commandLineArgs": "Example1"
     }
   }
 }
